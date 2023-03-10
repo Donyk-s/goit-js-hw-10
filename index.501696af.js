@@ -1,0 +1,2 @@
+!function(){var n={searching:document.querySelector("#search-box")};console.log(n.searching),n.searching.addEventListener("keydown",(function(n){})),fetch("https://restcountries.com/v2/name/{name}?fullText=true,capital/{capital},population,flags.svg,languages").then((function(n){return n.json()})).then((function(n){console.log(n)})).catch((function(n){console.log(n)}))}();
+//# sourceMappingURL=index.501696af.js.map
