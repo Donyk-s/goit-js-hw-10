@@ -7,9 +7,9 @@ const refs = {
   countryList: document.querySelector('.country-list'),
   countryInfo: document.querySelector('.country-info'),
 };
-console.log(refs.countryInfo);
-console.log(refs.countryList);
-console.log(refs.searching);
+// console.log(refs.countryInfo);
+// console.log(refs.countryList);
+// console.log(refs.searching);
 refs.searching.addEventListener(
   'input',
   debounce(e => {
@@ -33,22 +33,22 @@ refs.searching.addEventListener(
     }
   }, DEBOUNCE_DELAY)
 );
-fetch(
-  `https://restcountries.com/v3.1/name/{name}?fields=,name,capital,population,flags,languages`
-)
-  .then(response => {
-    if (!response.ok) {
-      if (response.status === 404) {
-        return [];
-      }
-      throw new Error(response.status);
-    }
-    return response.json();
-  })
+// fetch(
+//   `https://restcountries.com/v3.1/name/{name}?fields=,name,capital,population,flags,languages`
+// )
+//   .then(response => {
+//     if (!response.ok) {
+//       if (response.status === 404) {
+//         return [];
+//       }
+//       throw new Error(response.status);
+//     }
+//     return response.json();
+//   })
 
-  .catch(err => {
-    console.error(err);
-  });
+//   .catch(err => {
+//     console.error(err);
+//   });
 function renderCountryList(country) {
   const markup = country
     .map(el => {
