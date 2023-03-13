@@ -1,2 +1,0 @@
-const o={searching:document.querySelector("#search-box"),countryList:document.querySelector(".country-list"),countryInfo:document.querySelector(".country-info")};console.log(o.countryInfo),console.log(o.countryList),console.log(o.searching),o.searching.addEventListener("keydown",(o=>{})),fetch("https://restcountries.com/v2/name/{name}?fullText=true").then((o=>o.json())).then((o=>{console.log(o)})).catch((o=>{console.log(o)}));
-//# sourceMappingURL=index.64228d17.js.map
