@@ -49,10 +49,25 @@ refs.searching.addEventListener(
 //   .catch(err => {
 //     console.error(err);
 //   });
-function renderCountryList(country) {
-  const markup = country
-    .map(el => {
-      return `<li><img src= "${el.flag.svg}" alt="Flag of ${el.name.official}" width ="30" height = "20"><p>${el.name.official}</p></li>`;
+
+function renderCountryList(countrys) {
+  const markup = countrys
+    .map(country => {
+      return `<li><img src= "${country.flag.svg}" alt="Flag of ${country.name.official}" width ="30" height = "20"><p>${el.name.official}</p></li>`;
+    })
+    .join('');
+  refs.countryList.innerHTML = markup;
+}
+function renderOneCountry(countrys) {
+  const markup = countrys
+    .map(country => {
+      return `<li><img src = "${country.flag.svg}" alt="Flag of ${
+        country.name.official
+      }" width ="30" height = "20"><p>${el.name.official}</p>
+    <p><b>Capital</b>: ${country.capital}</p>
+    <p><b>Population</b>: ${country.population}</p>
+    <p><b>Languages</b>: ${Object.values(country.languages)}</p>
+    </li>`;
     })
     .join('');
   refs.countryList.innerHTML = markup;
