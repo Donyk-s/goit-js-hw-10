@@ -31,13 +31,19 @@ refs.searching.addEventListener(
     }
   }, DEBOUNCE_DELAY)
 );
-fetch(`https://restcountries.com/v2/name/{name}?fullText=true`)
+fetch(
+  `https://restcountries.com/v3.1/name/{name}?fields=,name,capital,population,flags,languages`
+)
   .then(response => {
+    if (!response.ok) {
+      if (response.status === 404) {
+        return [];
+      }
+      throw new Error(response.status);
+    }
     return response.json();
   })
-  .then(country => {
-    console.log(country);
-  })
+
   .catch(err => {
-    console.log(err);
+    console.error(err);
   });
