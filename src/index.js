@@ -49,7 +49,10 @@ refs.searching.addEventListener(
 //   .catch(err => {
 //     console.error(err);
 //   });
-
+function cleanHtml() {
+  refs.countryList.innerHTML = '';
+  refs.countryInfo.innerHTML = '';
+}
 function renderCountryList(countrys) {
   const markup = countrys
     .map(country => {
