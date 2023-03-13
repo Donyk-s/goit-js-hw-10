@@ -49,3 +49,11 @@ fetch(
   .catch(err => {
     console.error(err);
   });
+function renderCountryList(country) {
+  const markup = country
+    .map(el => {
+      return `<li><img src= "${el.flag.svg}" alt="Flag of ${el.name.official}" width ="30" height = "20"><p>${el.name.official}</p></li>`;
+    })
+    .join('');
+  refs.countryList.innerHTML = markup;
+}
