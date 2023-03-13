@@ -18,10 +18,12 @@ refs.searching.addEventListener(
     if (valueTrimmed !== '') {
       fetchCountries(valueTrimmed).then(response => {
         if (response.lenght > 10) {
-          Notiflix.Notify.info('Search is bad');
+          Notiflix.Notify.info(
+            'Too many matches found. Please enter more specific name.'
+          );
         } else if (response === undefined) {
           // або тут записати 0
-          Notiflix.Notify.info('undefined');
+          Notiflix.Notify.info('Ooops, there is no country with that name');
         } else if (response.lenght >= 2 && response <= 10) {
           renderCountryList(response);
         } else if (response.lenght === 1) {
