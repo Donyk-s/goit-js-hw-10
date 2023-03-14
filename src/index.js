@@ -15,72 +15,58 @@ const refs = {
 refs.searching.addEventListener(
   'input',
   debounce(Event => {
-    const valueTrimmed = refs.searching.value.trim();
+    const trimValue = refs.searching.value.trim();
     cleanHtml();
-    if (valueTrimmed !== '') {
-      fetchCountries(valueTrimmed).then(response => {
-        if (response.lenght > 10) {
+
+    if (trimValue !== '') {
+      fetchCountries(trimValue).then(response => {
+        if (response.length > 10) {
           Notiflix.Notify.info(
-            'Too many matches found. Please enter more specific name.'
+            'Too many matches found. Please enter a more specific name.'
           );
-        } else if (response === undefined) {
-          // або тут записати 0
-          Notiflix.Notify.failure('Ooops, there is no country with that name');
-        } else if (response.lenght >= 2 && response <= 10) {
+        } else if (response.length === 0) {
+          Notiflix.Notify.failure('Oops, there is no country with that name');
+        } else if (response.length >= 2 && response.length <= 10) {
           renderCountryList(response);
-        } else if (response.lenght === 1) {
+        } else if (response.length === 1) {
           renderOneCountry(response);
         }
       });
     }
   }, DEBOUNCE_DELAY)
 );
-
-// export const fetchCountries = name => {
-//   return fetch(
-//     `https://restcountries.com/v3.1/name/${name}?fields=,name,capital,population,flags,languages`
-//   )
-//     .then(response => {
-//       // якщо немає відповіді 200 ОК і є 404 - повернути пустий масив
-//       if (!response.ok) {
-//         if (response.status === 404) {
-//           return []; // поверненя пустого масиву
-//         }
-//         // явно відхиляємо проміс, щоб можна було зловити і обробити помилку
-//         throw new Error(response.status);
-//       }
-
-//       // повертаємо відповідь-список країн у форматі .json
-//       return response.json();
-//     })
-//     .catch(error => {
-//       console.error(error);
-//     });
-// };
-
 function cleanHtml() {
   refs.countryList.innerHTML = '';
   refs.countryInfo.innerHTML = '';
 }
-function renderCountryList(countrys) {
-  const markup = countrys
-    .map(country => {
-      return `<li><img src= "${country.flag.svg}" alt="Flag of ${country.name.official}" width ="30" height = "20"><p>${el.name.official}</p></li>`;
+
+function renderCountryList(countries) {
+  const markup = countries
+    .map(el => {
+      return `<li>
+      <img src="${el.flags.svg}" alt="Flag of ${el.name.official}" width="30" hight="20">
+         <p>${el.name.official}</p>
+                </li>`;
     })
     .join('');
+
   refs.countryList.innerHTML = markup;
 }
-function renderOneCountry(countrys) {
-  const markup = countrys
-    .map(country => {
-      return `<li><img src = "${country.flag.svg}" alt="Flag of ${
-        country.name.official
-      }" width ="30" height = "20"><p>${el.name.official}</p>
-    <p><b>Capital</b>: ${country.capital}</p>
-    <p><b>Population</b>: ${country.population}</p>
-    <p><b>Languages</b>: ${Object.values(country.languages)}</p>
-    </li>`;
+
+function renderOneCountry(countries) {
+  const markup = countries
+    .map(el => {
+      return `<li>
+      <img src="${el.flags.svg}" alt="Flag of ${
+        el.name.official
+      }" width="30" hight="20">
+         <p>${el.name.official}</p>
+            <p><b>Capital</b>: ${el.capital}</p>
+            <p><b>Population</b>: ${el.population}</p>
+            <p><b>Languages</b>: ${Object.values(el.languages)} </p>
+                </li>`;
     })
     .join('');
+
   refs.countryList.innerHTML = markup;
 }
