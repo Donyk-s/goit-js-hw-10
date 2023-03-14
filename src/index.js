@@ -10,45 +10,45 @@ const refs = {
 // console.log(refs.countryInfo);
 // console.log(refs.countryList);
 // console.log(refs.searching);
-refs.searching.addEventListener(
-  'input',
-  debounce(e => {
-    const valueTrimmed = input.value.trim();
-    cleanHtml();
-    if (valueTrimmed !== '') {
-      fetchCountries(valueTrimmed).then(response => {
-        if (response.lenght > 10) {
-          Notiflix.Notify.info(
-            'Too many matches found. Please enter more specific name.'
-          );
-        } else if (response === undefined) {
-          // або тут записати 0
-          Notiflix.Notify.info('Ooops, there is no country with that name');
-        } else if (response.lenght >= 2 && response <= 10) {
-          renderCountryList(response);
-        } else if (response.lenght === 1) {
-          renderOneCountry(response);
-        }
-      });
-    }
-  }, DEBOUNCE_DELAY)
-);
-// fetch(
-//   `https://restcountries.com/v3.1/name/{name}?fields=,name,capital,population,flags,languages`
-// )
-//   .then(response => {
-//     if (!response.ok) {
-//       if (response.status === 404) {
-//         return [];
-//       }
-//       throw new Error(response.status);
+// refs.searching.addEventListener(
+//   'input',
+//   debounce(Event => {
+//     const valueTrimmed = input.value.trim();
+//     cleanHtml();
+//     if (valueTrimmed !== '') {
+//       fetchCountries(valueTrimmed).then(response => {
+//         if (response.lenght > 10) {
+//           Notiflix.Notify.info(
+//             'Too many matches found. Please enter more specific name.'
+//           );
+//         } else if (response === undefined) {
+//           // або тут записати 0
+//           Notiflix.Notify.failure('Ooops, there is no country with that name');
+//         } else if (response.lenght >= 2 && response <= 10) {
+//           renderCountryList(response);
+//         } else if (response.lenght === 1) {
+//           renderOneCountry(response);
+//         }
+//       });
 //     }
-//     return response.json();
-//   })
+//   }, DEBOUNCE_DELAY)
+// );
+function fetchCountries(name) {
+  return `https://restcountries.com/v3.1/name/{name}?fields=,name,capital,population,flags,languages`
+    .then(response => {
+      if (!response.ok) {
+        if (response.status === 404) {
+          return [];
+        }
+        throw new Error(response.status);
+      }
+      return response.json();
+    })
 
-//   .catch(err => {
-//     console.error(err);
-//   });
+    .catch(err => {
+      console.error(err);
+    });
+}
 function cleanHtml() {
   refs.countryList.innerHTML = '';
   refs.countryInfo.innerHTML = '';
@@ -75,3 +75,26 @@ function renderOneCountry(countrys) {
     .join('');
   refs.countryList.innerHTML = markup;
 }
+refs.searching.addEventListener(
+  'input',
+  debounce(e => {
+    const trimmedValue = input.value.trim();
+    cleanHtml();
+
+    if (trimmedValue !== '') {
+      fetchCountries(trimmedValue).then(foundData => {
+        if (foundData.length > 10) {
+          Notiflix.Notify.info(
+            'Too many matches found. Please enter a more specific name.'
+          );
+        } else if (foundData.length === 0) {
+          Notiflix.Notify.failure('Oops, there is no country with that name');
+        } else if (foundData.length >= 2 && foundData.length <= 10) {
+          renderCountryList(foundData);
+        } else if (foundData.length === 1) {
+          renderOneCountry(foundData);
+        }
+      });
+    }
+  }, DEBOUNCE_DELAY)
+);
