@@ -1,23 +1,46 @@
-input.addEventListener(
-  'input',
-  debounce(e => {
-    const trimmedValue = input.value.trim();
-    cleanHtml();
+// export const fetchCountries = name => {
+//   return fetch(
+//     `https://restcountries.com/v3.1/name/{name}?fields=,name,capital,population,flags,languages`
+//   )
+//     .then(response => {
+//       if (!response.ok) {
+//         if (response.status === 404) {
+//           return [];
+//         }
+//         throw new Error(response.status);
+//       }
+//       return response.json();
+//     })
 
-    if (trimmedValue !== '') {
-      fetchCountries(trimmedValue).then(foundData => {
-        if (foundData.length > 10) {
-          Notiflix.Notify.info(
-            'Too many matches found. Please enter a more specific name.'
-          );
-        } else if (foundData.length === 0) {
-          Notiflix.Notify.failure('Oops, there is no country with that name');
-        } else if (foundData.length >= 2 && foundData.length <= 10) {
-          renderCountryList(foundData);
-        } else if (foundData.length === 1) {
-          renderOneCountry(foundData);
+//     .catch(err => {
+//       console.error(err);
+//     });
+// };
+export const fetchCountries = name => {
+  return fetch(
+    `https://restcountries.com/v3.1/name/${name}?fields=,name,capital,population,flags,languages`
+  )
+    .then(response => {
+      // якщо немає відповіді 200 ОК і є 404 - повернути пустий масив
+      if (!response.ok) {
+        if (response.status === 404) {
+          return []; // поверненя пустого масиву
         }
-      });
-    }
-  }, DEBOUNCE_DELAY)
-);
+        // явно відхиляємо проміс, щоб можна було зловити і обробити помилку
+        throw new Error(response.status);
+      }
+
+      // повертаємо відповідь-список країн у форматі .json
+      return response.json();
+    })
+    .catch(error => {
+      console.error(error);
+    });
+};
+// const async = function fetchCountries{
+//   try {
+//     return
+//   } catch (error) {
+
+//   }
+// }

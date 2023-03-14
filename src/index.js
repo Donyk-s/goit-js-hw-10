@@ -1,6 +1,7 @@
 import './css/styles.css';
 import Notiflix from 'notiflix';
 import debounce from 'lodash.debounce';
+import { fetchCountries } from './fetchCountries';
 
 const DEBOUNCE_DELAY = 300;
 const refs = {
@@ -8,13 +9,13 @@ const refs = {
   countryList: document.querySelector('.country-list'),
   countryInfo: document.querySelector('.country-info'),
 };
-console.log(refs.countryInfo);
-console.log(refs.countryList);
-console.log(refs.searching);
+// console.log(refs.countryInfo);
+// console.log(refs.countryList);
+// console.log(refs.searching);
 refs.searching.addEventListener(
   'input',
   debounce(Event => {
-    const valueTrimmed = input.value.trim();
+    const valueTrimmed = refs.searching.value.trim();
     cleanHtml();
     if (valueTrimmed !== '') {
       fetchCountries(valueTrimmed).then(response => {
@@ -34,22 +35,29 @@ refs.searching.addEventListener(
     }
   }, DEBOUNCE_DELAY)
 );
-function fetchCountries(name) {
-  return `https://restcountries.com/v3.1/name/{name}?fields=,name,capital,population,flags,languages`
-    .then(response => {
-      if (!response.ok) {
-        if (response.status === 404) {
-          return [];
-        }
-        throw new Error(response.status);
-      }
-      return response.json();
-    })
 
-    .catch(err => {
-      console.error(err);
-    });
-}
+// export const fetchCountries = name => {
+//   return fetch(
+//     `https://restcountries.com/v3.1/name/${name}?fields=,name,capital,population,flags,languages`
+//   )
+//     .then(response => {
+//       // якщо немає відповіді 200 ОК і є 404 - повернути пустий масив
+//       if (!response.ok) {
+//         if (response.status === 404) {
+//           return []; // поверненя пустого масиву
+//         }
+//         // явно відхиляємо проміс, щоб можна було зловити і обробити помилку
+//         throw new Error(response.status);
+//       }
+
+//       // повертаємо відповідь-список країн у форматі .json
+//       return response.json();
+//     })
+//     .catch(error => {
+//       console.error(error);
+//     });
+// };
+
 function cleanHtml() {
   refs.countryList.innerHTML = '';
   refs.countryInfo.innerHTML = '';
