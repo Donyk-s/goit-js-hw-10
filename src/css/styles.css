@@ -10,11 +10,30 @@ body {
   background-color: #fafafa;
   color: #212121;
   line-height: 1.5;
+  background-color: #aec3d2;
 }
 
 #search-box {
+  margin-left: auto;
+  margin-right: auto;
   font: inherit;
   padding: 8px;
   max-width: 320px;
   margin-bottom: 16px;
+  border: 5px solid #9e9e9e;
+  color: #000000;
+  background: #fff;
+  align-items: center;
+  border-radius: 5px;
+  align-items: center;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
 }
